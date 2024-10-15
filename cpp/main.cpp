@@ -4,7 +4,8 @@
 #include <unistd.h>
 
 
-enum marioState {IDLE, JUMPING};
+
+enum marioState {IDLE, JUMPING, WALKING1, WALKING2, WALKING3};
 marioState mario_state = IDLE;
 
 
@@ -28,6 +29,11 @@ const int floor_height = wall_height - mario_height;
 int mario_x = 0;
 int mario_y = wall_height - mario_height;
 
+// there variables hold how many pixels mario 
+// should move when the next frame is drawn 
+int mario_right_budget = 0;
+int mario_left_budget  = 0;
+int mario_jump_budget  = 0;
 
 
 char pixels[wall_height][wall_width];
@@ -41,11 +47,15 @@ char pixels[wall_height][wall_width];
 
 bool gameRunning = false;
 
+
 void setup();
 void draw_border();
 void draw_mario(int x, int y);
 int draw_rectangle(int h, int w, int start_x, int start_y);
 void drawScreen();
+void move_mario_right();
+void move_mario_left();
+
 
 void setup(){
 	// setup a clear canvas 
@@ -149,12 +159,14 @@ void draw_slice(int start_x, int start_y, char arr[]){
 }
 
 void elevateMario(){
-	if(mario_y > 1){
-		mario_y--;
+	
+	bool mario_on_ground = mario_y >= floor_height;
+	bool mario_not_mid_jump = (mario_jump_budget == 0); 
+	
+	
+	if(mario_on_ground  && mario_not_mid_jump){
+		mario_jump_budget = 2;
 	}
-	
-	
-	std::cout << mario_y;
 	
 }
 
@@ -169,37 +181,72 @@ void descendMario(){
 }
 
 void draw_mario(int start_x, int start_y){
+	
+	
 
 	
 	
 	if(mario_y < floor_height) {
 		mario_state= JUMPING;
-	} else if(mario_y >= floor_height){
+	} else if(mario_y >= floor_height && mario_right_budget == 0){
 		mario_state = IDLE;
+	} else if(mario_right_budget > 0){
+		
+		
+		if(mario_state == IDLE){
+			mario_state = WALKING1;
+		} else if(mario_state == WALKING1){
+			mario_state = WALKING2;
+		} else if(mario_state == WALKING2){
+			mario_state = WALKING3;
+		} else {
+			mario_state = WALKING1;
+		}
 	}
+		
+		
+		
 	
 	
-	char  l1[] ="   #####"         ;
+		char  l1[16];
+		char  l2[16];
+		char  l3[16];
+		char  l4[16];
+		char  l5[16];
+		char  l6[16];
+		char  l7[16];
+		char  l8[16];
+		char  l9[16];
+		char l10[16];
+		char l11[16];
+		char l12[16];
+		char l13[16];
+		char l14[16];
+		char l15[16];
+		char l16[16];
+	
+	
+	
 		
 	
 	
 	if(mario_state == IDLE){
-		
-		char  l2[] ="  #########"      ;
-		char  l3[] ="  ###::#:"        ;
-		char  l4[] =" #:#:::#:::"      ;
-		char  l5[] =" #:##:::#::::"    ;
-		char  l6[] =" ##:::::####"     ;
-		char  l7[] ="   ::::::::"      ;
-		char  l8[] ="  #######"         ;
-		char  l9[] =" ###########"   ;
-		char l10[] ="###############"   ;
-		char l11[] ="::###:##:####::"   ;
-		char l12[] =":::#########:::"   ;
-		char l13[] ="::###########::"   ;
-		char l14[] ="  ###     ###"     ;
-		char l15[] =" ###       ####"   ;
-		char l16[] ="####       #####"  ;
+		char  l1[] ="   #####        ";
+		char  l2[] ="  #########     ";
+		char  l3[] ="  ###::#:       ";
+		char  l4[] =" #:#:::#:::     ";
+		char  l5[] =" #:##:::#::::   ";
+		char  l6[] =" ##:::::####    ";
+		char  l7[] ="   ::::::::     ";
+		char  l8[] ="  #######       ";
+		char  l9[] =" ###########    ";
+		char l10[] ="############### ";
+		char l11[] ="::###:##:####:: ";
+		char l12[] =":::#########::: ";
+		char l13[] ="::###########:: ";
+		char l14[] ="  ###     ###   ";
+		char l15[] =" ###       #### ";
+		char l16[] ="####       #####";
 		
 		draw_slice(start_x, start_y + 0, l1);
 		draw_slice(start_x, start_y + 1, l2);
@@ -223,40 +270,157 @@ void draw_mario(int start_x, int start_y){
 	
 	else if (mario_state == JUMPING){
 		
-		char  l1[] ="   #####  ;;;;";
-		char  l2[] ="  #########;;;";
-		char  l3[] ="  ###::#:  ###";
-		char  l4[] =" #:#:::#:::###";
-		char  l5[] =" #:##:::#::::#";
-		char  l6[] =" ##:::::#####"     ;
-		char  l7[] ="   ::::::::#"      ;
-		char  l8[] ="  #########"         ;
-		char  l9[] =" ##########"   ;
-		char l10[] ="###########  #"   ;
-		char l11[] ="::###:##:##  #"   ;
-		char l12[] =":::###########"   ;
-		char l13[] ="::############"   ;
-		char l14[] =" #############"     ;
-		char l15[] ="##########    "   ;
-		char l16[] ="#  ####       "  ;
+		char  l1[] ="     #####  ;;;;";
+		char  l2[] ="    #########;;;";
+		char  l3[] ="    ###::#:  ###";
+		char  l4[] ="   #:#:::#:::###";
+		char  l5[] ="   #:##:::#::::#";
+		char  l6[] ="   ##:::::##### ";
+		char  l7[] ="     ::::::::#  ";
+		char  l8[] ="    #########   ";
+		char  l9[] ="   ##########   ";
+		char l10[] ="  ###########  #";
+		char l11[] ="  ::###:##:##  #";
+		char l12[] ="  :::###########";
+		char l13[] ="  ::############";
+		char l14[] ="   #############";
+		char l15[] ="  ##########    ";
+		char l16[] ="  #             ";
 		
 		draw_slice(start_x, start_y + 0, l1);
-	draw_slice(start_x, start_y + 1, l2);
-	draw_slice(start_x, start_y + 2, l3);
-	draw_slice(start_x, start_y + 3, l4);
-	draw_slice(start_x, start_y + 4, l5);
-	draw_slice(start_x, start_y + 5, l6);
+		draw_slice(start_x, start_y + 1, l2);
+		draw_slice(start_x, start_y + 2, l3);
+		draw_slice(start_x, start_y + 3, l4);
+		draw_slice(start_x, start_y + 4, l5);
+		draw_slice(start_x, start_y + 5, l6);
 	
-	draw_slice(start_x, start_y + 6,  l7);
-	draw_slice(start_x, start_y + 7,  l8);
-	draw_slice(start_x, start_y + 8,  l9);
-	draw_slice(start_x, start_y + 9,  l10);
-	draw_slice(start_x, start_y + 10, l11);
-	draw_slice(start_x, start_y + 11, l12);
-	draw_slice(start_x, start_y + 12, l13);
-	draw_slice(start_x, start_y + 13, l14);
-	draw_slice(start_x, start_y + 14, l15);
-	draw_slice(start_x, start_y + 15, l16);
+		draw_slice(start_x, start_y + 6,  l7);
+		draw_slice(start_x, start_y + 7,  l8);
+		draw_slice(start_x, start_y + 8,  l9);
+		draw_slice(start_x, start_y + 9,  l10);
+		draw_slice(start_x, start_y + 10, l11);
+		draw_slice(start_x, start_y + 11, l12);
+		draw_slice(start_x, start_y + 12, l13);
+		draw_slice(start_x, start_y + 13, l14);
+		draw_slice(start_x, start_y + 14, l15);
+		draw_slice(start_x, start_y + 15, l16);
+		
+	}
+	
+	else if(mario_state == WALKING1){
+		
+		char  l1[] ="     #####        ";
+		char  l2[] ="    #########     ";
+		char  l3[] ="    ###::#:       ";
+		char  l4[] ="   #:#:::#:::     ";
+		char  l5[] ="   #:##:::#::::   ";
+		char  l6[] ="   ##:::::####    ";
+		char  l7[] ="     ::::::::     ";
+		char  l8[] ="  #########       ";
+		char  l9[] ="::#############:::";
+		char l10[] ="::: ############::";
+		char l11[] ="::  #####:####    ";
+		char l12[] ="   #########    # ";
+		char l13[] ="  ############### ";
+		char l14[] =" #####    ####### ";
+		char l15[] =" ###              ";
+		char l16[] ="  ###             ";
+		
+		draw_slice(start_x, start_y + 0, l1);
+		draw_slice(start_x, start_y + 1, l2);
+		draw_slice(start_x, start_y + 2, l3);
+		draw_slice(start_x, start_y + 3, l4);
+		draw_slice(start_x, start_y + 4, l5);
+		draw_slice(start_x, start_y + 5, l6);
+	
+		draw_slice(start_x, start_y + 6,  l7);
+		draw_slice(start_x, start_y + 7,  l8);
+		draw_slice(start_x, start_y + 8,  l9);
+		draw_slice(start_x, start_y + 9,  l10);
+		draw_slice(start_x, start_y + 10, l11);
+		draw_slice(start_x, start_y + 11, l12);
+		draw_slice(start_x, start_y + 12, l13);
+		draw_slice(start_x, start_y + 13, l14);
+		draw_slice(start_x, start_y + 14, l15);
+		draw_slice(start_x, start_y + 15, l16);
+		
+	}
+	
+	else if(mario_state == WALKING2){
+		
+		char  l1[] ="     #####        ";
+		char  l2[] ="    #########     ";
+		char  l3[] ="    ###::#:       ";
+		char  l4[] ="   #:#:::#:::     ";
+		char  l5[] ="   #:##:::#::::   ";
+		char  l6[] ="   ##:::::####    ";
+		char  l7[] ="     ::::::::     ";
+		char  l8[] ="   ########       ";
+		char  l9[] ="  ##########      ";
+		char l10[] ="  ###########:    ";
+		char l11[] ="  ######:#####    ";
+		char l12[] ="  ############    ";
+		char l13[] ="   ##########     ";
+		char l14[] ="    #########     ";
+		char l15[] ="    ##########    ";
+		char l16[] ="    #####         ";
+		
+		draw_slice(start_x, start_y + 0, l1);
+		draw_slice(start_x, start_y + 1, l2);
+		draw_slice(start_x, start_y + 2, l3);
+		draw_slice(start_x, start_y + 3, l4);
+		draw_slice(start_x, start_y + 4, l5);
+		draw_slice(start_x, start_y + 5, l6);
+	
+		draw_slice(start_x, start_y + 6,  l7);
+		draw_slice(start_x, start_y + 7,  l8);
+		draw_slice(start_x, start_y + 8,  l9);
+		draw_slice(start_x, start_y + 9,  l10);
+		draw_slice(start_x, start_y + 10, l11);
+		draw_slice(start_x, start_y + 11, l12);
+		draw_slice(start_x, start_y + 12, l13);
+		draw_slice(start_x, start_y + 13, l14);
+		draw_slice(start_x, start_y + 14, l15);
+		draw_slice(start_x, start_y + 15, l16);
+		
+	}
+	
+	else if(mario_state == WALKING3){
+		
+		char  l1[] ="     #####        ";
+		char  l2[] ="    #########     ";
+		char  l3[] ="    ###::#:       ";
+		char  l4[] ="   #:#:::#:::     ";
+		char  l5[] ="   #:##:::#::::   ";
+		char  l6[] ="   ##:::::####    ";
+		char  l7[] ="     ::::::::     ";
+		char  l8[] ="   ########  :    ";
+		char  l9[] ="  :########::::   ";
+		char l10[] =" ::##########     ";
+		char l11[] =" #######:####     ";
+		char l12[] =" ###########      ";
+		char l13[] ="#####  ####       ";
+		char l14[] ="#      ###        ";
+		char l15[] ="     ####         ";
+		char l16[] ="     #####        ";
+		
+		draw_slice(start_x, start_y + 0, l1);
+		draw_slice(start_x, start_y + 1, l2);
+		draw_slice(start_x, start_y + 2, l3);
+		draw_slice(start_x, start_y + 3, l4);
+		draw_slice(start_x, start_y + 4, l5);
+		draw_slice(start_x, start_y + 5, l6);
+	
+		draw_slice(start_x, start_y + 6,  l7);
+		draw_slice(start_x, start_y + 7,  l8);
+		draw_slice(start_x, start_y + 8,  l9);
+		draw_slice(start_x, start_y + 9,  l10);
+		draw_slice(start_x, start_y + 10, l11);
+		draw_slice(start_x, start_y + 11, l12);
+		draw_slice(start_x, start_y + 12, l13);
+		draw_slice(start_x, start_y + 13, l14);
+		draw_slice(start_x, start_y + 14, l15);
+		draw_slice(start_x, start_y + 15, l16);
 		
 	}
 	
@@ -291,10 +455,8 @@ void restoreTerminal(){
 
 void input(){
 	
-	int i=0;
-	int j=0;
 	char ch;
-
+	
 	while(true){
 		ch = getchar(); // Call the getch function
         if (ch == 'q') {
@@ -311,11 +473,25 @@ void input(){
 			elevateMario();
 		}
 		
+		else if(ch == 'd'){
+			move_mario_right();
+		}
+		
+		else if(ch == 'a'){
+			move_mario_left();
+		}
 	}
 	
 	
 }
 
+void move_mario_right(){
+	mario_right_budget ++;
+}
+
+void move_mario_left(){
+	mario_left_budget +=1;
+}
 void applyGravity(){
 	
 	while(gameRunning){
@@ -358,13 +534,37 @@ void drawScreen(){
 // one queue is for y movement and the other is for x movement 
 
 
+void updatePositions(){
+	// update the positions of all the players 
+	// called before the screen is redrawn 
+	
+	
+	// for calculating the jump
+	if(mario_jump_budget > 0){
+		mario_y --;
+		mario_jump_budget--;
+		
+	} else if(mario_y < floor_height){
+		mario_y ++;
+	}
+	
+	// for moving forward and backward 
+	if(mario_right_budget >= 1){
+		mario_x ++;
+		mario_right_budget --;
+		
+	}
+	
+	if(mario_left_budget >= 1){
+		mario_y--;
+		mario_left_budget--;
+	}
+}
+
 
 
 
 int main(){
-	
-	
-	
 	
 	
 	gameRunning = true;
@@ -376,10 +576,11 @@ int main(){
 	std::thread inputThread(input);
 	
 	// start gravity thread 
-	std::thread gravityThread(applyGravity);
+	//std::thread gravityThread(applyGravity);
 	
 	while(gameRunning) {
 		setup();
+		updatePositions();
 		drawScreen();
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));	
 	}
@@ -396,7 +597,7 @@ int main(){
 	
 	
 	
-	gravityThread.join();
+	//gravityThread.join();
 	inputThread.join();
 	
 	return 0;
