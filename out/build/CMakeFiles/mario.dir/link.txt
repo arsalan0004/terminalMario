@@ -1,0 +1,2 @@
+/usr/bin/ar qc libmario.a CMakeFiles/mario.dir/cpp/marioFx.cpp.o
+/usr/bin/ranlib libmario.a

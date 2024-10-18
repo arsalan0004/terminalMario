@@ -117,6 +117,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
+# Target rules for targets named game
+
+# Build rule for target.
+game: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 game
+.PHONY : game
+
+# fast build rule for target.
+game/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/build
+.PHONY : game/fast
+
+#=============================================================================
+# Target rules for targets named mario
+
+# Build rule for target.
+mario: cmake_check_build_system
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 mario
+.PHONY : mario
+
+# fast build rule for target.
+mario/fast:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mario.dir/build.make CMakeFiles/mario.dir/build
+.PHONY : mario/fast
+
+#=============================================================================
 # Target rules for targets named TerminalMario
 
 # Build rule for target.
@@ -128,6 +154,30 @@ TerminalMario: cmake_check_build_system
 TerminalMario/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TerminalMario.dir/build.make CMakeFiles/TerminalMario.dir/build
 .PHONY : TerminalMario/fast
+
+cpp/game.o: cpp/game.cpp.o
+.PHONY : cpp/game.o
+
+# target to build an object file
+cpp/game.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/cpp/game.cpp.o
+.PHONY : cpp/game.cpp.o
+
+cpp/game.i: cpp/game.cpp.i
+.PHONY : cpp/game.i
+
+# target to preprocess a source file
+cpp/game.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/cpp/game.cpp.i
+.PHONY : cpp/game.cpp.i
+
+cpp/game.s: cpp/game.cpp.s
+.PHONY : cpp/game.s
+
+# target to generate assembly for a file
+cpp/game.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/game.dir/build.make CMakeFiles/game.dir/cpp/game.cpp.s
+.PHONY : cpp/game.cpp.s
 
 cpp/main.o: cpp/main.cpp.o
 .PHONY : cpp/main.o
@@ -153,6 +203,30 @@ cpp/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/TerminalMario.dir/build.make CMakeFiles/TerminalMario.dir/cpp/main.cpp.s
 .PHONY : cpp/main.cpp.s
 
+cpp/marioFx.o: cpp/marioFx.cpp.o
+.PHONY : cpp/marioFx.o
+
+# target to build an object file
+cpp/marioFx.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mario.dir/build.make CMakeFiles/mario.dir/cpp/marioFx.cpp.o
+.PHONY : cpp/marioFx.cpp.o
+
+cpp/marioFx.i: cpp/marioFx.cpp.i
+.PHONY : cpp/marioFx.i
+
+# target to preprocess a source file
+cpp/marioFx.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mario.dir/build.make CMakeFiles/mario.dir/cpp/marioFx.cpp.i
+.PHONY : cpp/marioFx.cpp.i
+
+cpp/marioFx.s: cpp/marioFx.cpp.s
+.PHONY : cpp/marioFx.s
+
+# target to generate assembly for a file
+cpp/marioFx.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mario.dir/build.make CMakeFiles/mario.dir/cpp/marioFx.cpp.s
+.PHONY : cpp/marioFx.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,9 +236,17 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... TerminalMario"
+	@echo "... game"
+	@echo "... mario"
+	@echo "... cpp/game.o"
+	@echo "... cpp/game.i"
+	@echo "... cpp/game.s"
 	@echo "... cpp/main.o"
 	@echo "... cpp/main.i"
 	@echo "... cpp/main.s"
+	@echo "... cpp/marioFx.o"
+	@echo "... cpp/marioFx.i"
+	@echo "... cpp/marioFx.s"
 .PHONY : help
 
 

@@ -1,1 +1,1 @@
-/usr/bin/c++ CMakeFiles/TerminalMario.dir/cpp/main.cpp.o -o TerminalMario 
+/usr/bin/c++ CMakeFiles/TerminalMario.dir/cpp/main.cpp.o -o TerminalMario  libgame.a libmario.a 

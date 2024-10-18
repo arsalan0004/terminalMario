@@ -1,3 +1,5 @@
+/home/arsalan/terminalMario/out/build/CMakeFiles/game.dir
+/home/arsalan/terminalMario/out/build/CMakeFiles/mario.dir
 /home/arsalan/terminalMario/out/build/CMakeFiles/TerminalMario.dir
 /home/arsalan/terminalMario/out/build/CMakeFiles/edit_cache.dir
 /home/arsalan/terminalMario/out/build/CMakeFiles/rebuild_cache.dir

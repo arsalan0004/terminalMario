@@ -216,33 +216,6 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-OLAS_BINARY_DIR:STATIC=/home/arsalan/terminalMario/out/build
-
-//Value Computed by CMake
-OLAS_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-OLAS_SOURCE_DIR:STATIC=/home/arsalan/terminalMario
-
-//Value Computed by CMake
-Project_BINARY_DIR:STATIC=/home/arsalan/terminalMario/out/build
-
-//Value Computed by CMake
-Project_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Project_SOURCE_DIR:STATIC=/home/arsalan/terminalMario
-
-//Value Computed by CMake
-TM_BINARY_DIR:STATIC=/home/arsalan/terminalMario/out/build
-
-//Value Computed by CMake
-TM_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-TM_SOURCE_DIR:STATIC=/home/arsalan/terminalMario
-
-//Value Computed by CMake
 TerminalMario_BINARY_DIR:STATIC=/home/arsalan/terminalMario/out/build
 
 //Value Computed by CMake

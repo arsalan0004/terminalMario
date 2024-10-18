@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/MyGame.dir/cpp/main.cpp.o CMakeFiles/MyGame.dir/cpp/game.cpp.o CMakeFiles/MyGame.dir/cpp/marioFx.cpp.o -o MyGame 

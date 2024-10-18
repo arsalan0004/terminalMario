@@ -3,6 +3,8 @@
 
 CMakeFiles/TerminalMario.dir/cpp/main.cpp.o
  /home/arsalan/terminalMario/cpp/main.cpp
+ /home/arsalan/terminalMario/cpp/game.h
+ /home/arsalan/terminalMario/cpp/marioFx.h
  /usr/include/alloca.h
  /usr/include/asm-generic/errno-base.h
  /usr/include/asm-generic/errno.h

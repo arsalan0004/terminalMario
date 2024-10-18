@@ -92,6 +92,8 @@ TerminalMario_EXTERNAL_OBJECTS =
 
 TerminalMario: CMakeFiles/TerminalMario.dir/cpp/main.cpp.o
 TerminalMario: CMakeFiles/TerminalMario.dir/build.make
+TerminalMario: libgame.a
+TerminalMario: libmario.a
 TerminalMario: CMakeFiles/TerminalMario.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/arsalan/terminalMario/out/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable TerminalMario"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/TerminalMario.dir/link.txt --verbose=$(VERBOSE)
