@@ -27,6 +27,9 @@ class Mario{
 	int left_budget;
 	int jump_budget;
 	
+	// direction mario is facing 
+	bool facing_right;
+	
 	
 	public:
 		void draw(char** pixels);

@@ -109,13 +109,18 @@ namespace mario_sprites{
 		                             "  ############# ",
 		                             "############    ",
 		                             "#               "};
+									 
+	
 	
 }
 
 
 Mario::Mario(int max_y, int max_x) : FLOOR_HEIGHT(max_y - MARIO_HEIGHT), MAX_X(max_x), MAX_Y(max_y){
 	
+	// mario is just chilling 
 	state = IDLE;
+	
+	facing_right = true;
 	
 	// set mario at start of game 
 	y = 0;
@@ -155,6 +160,17 @@ void Mario::updatePosition(){
 	
 	// update the position of mario 
 	
+	// determine direction of mario
+	if(right_budget == left_budget){
+		// don't change mario's direction
+		facing_right = facing_right;
+	}
+	else if(right_budget >= left_budget){
+		facing_right = true;
+	} else {
+		facing_right = false;
+	}
+	
 	// for calculating the jump
 	if(jump_budget > 0){
 		// move mario up
@@ -171,7 +187,6 @@ void Mario::updatePosition(){
 		}
 	}
 	
-	
 	// for moving mario forward 
 	if(right_budget > 0){
 		x++;
@@ -184,13 +199,13 @@ void Mario::updatePosition(){
 		x--;
 		left_budget--;
 	}
+	
+	
 }
 
 
 const char** get_mario_sprite(marioState state){
 	
-	
-
 	
 	switch(state){
 		case IDLE:
@@ -248,11 +263,25 @@ void Mario::draw(char** pixels){
 	// because the y coordinate begins at the top of the screen
 	int height_offset = MAX_Y - MARIO_HEIGHT;
 	
-	for(int r=0; r < MARIO_HEIGHT; r++){
+	// facing left, so draw the reverse sprite 
+	if(facing_right == 0) {
+		for(int r=0; r < MARIO_HEIGHT; r++){
 		for(int c=0; c < MARIO_WIDTH; c++){
-			pixels[r + height_offset-y][c+x] = mario_sprite[r][c];
+			pixels[r + height_offset-y][c+x] = mario_sprite[r][MARIO_WIDTH -1 -c];
 			
 			
+			}
+		}
+		
+	
+	} else /* mario is facing right */{
+	
+		for(int r=0; r < MARIO_HEIGHT; r++){
+			for(int c=0; c < MARIO_WIDTH; c++){
+				pixels[r + height_offset-y][c+x] = mario_sprite[r][c];
+				
+				
+			}
 		}
 	}
 }
