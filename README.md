@@ -12,4 +12,4 @@ To run this game, type out the following commands after cloning the project
 3. ```./TerminalMario ```
 
 #### How To Play
-use ```w````.  ```a````,  ```wd```` to move Mario around  
+use 'w', 'd', 'a' to move Mario around 
