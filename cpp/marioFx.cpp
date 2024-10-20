@@ -128,13 +128,10 @@ Mario::Mario(int max_y, int max_x) : FLOOR_HEIGHT(max_y - MARIO_HEIGHT), MAX_X(m
 }
 
 void Mario::elevate(){
-	
-	bool mario_on_ground = true ;//y >= MAX_Y;
-	bool mario_not_mid_jump = true ;//(jump_budget == 0); 
-	
-	if(mario_on_ground  && mario_not_mid_jump)
-		jump_budget = MARIO_JUMP_HEIGHT;
-
+		
+	// if mario is idle, then make him jump!
+	if(state != JUMPING && state != DOUBLE_JUMP)
+		jump_budget += MARIO_JUMP_HEIGHT;
 }
 
 void Mario::descend(){
@@ -154,6 +151,11 @@ void Mario::move_left(){
 	
 	if(x > 0)
 		left_budget ++;
+}
+
+
+int Mario::convertToWorldCoordinates(int y){
+	return MAX_Y - MARIO_HEIGHT -y;
 }
 
 void Mario::updatePosition(){
@@ -214,6 +216,12 @@ const char** get_mario_sprite(marioState state){
 		case JUMPING:
 			return mario_sprites::jumping;
 			
+		case FALLING:
+			return mario_sprites::jumping;
+		
+		case DOUBLE_JUMP:
+			return mario_sprites::jumping;
+			
 		case WALKING1:
 			return mario_sprites::walking1;
 			
@@ -228,30 +236,73 @@ const char** get_mario_sprite(marioState state){
 	}
 }
 
-void Mario::draw(char** pixels){
+bool Mario::onGround(char** pixels){
+	// check the pixles under Mario's feet and see if 
+	// he is on a surface that he can stand on 
 	
-	// mario is off the ground 
-	if(y > 0) {
-		state = JUMPING;
+	// 1. if mario is at the bottom of the screen, 
+	// then he is on the ground 
+	if(y==0){
+		return true;
 	}
-	 else if(y == 0 && right_budget == 0){
-		state = IDLE;
+	
+	
+	// 2. if mario is in on a platform, then he is on the ground too. 
+	// TODO 
+	
+	return false;
+	
+}
+
+void Mario::updateState(char** pixels){
+	
+	// mario is off the ground, 
+	if(!onGround(pixels)) {
 		
-	// mario should be walking 
-	} else if(right_budget > 0){
-		
-		switch(state) {
-			case IDLE     : state = WALKING1; break;
-			case WALKING1 : state = WALKING2; break;
-			case WALKING2 : state = WALKING3; break;
-			case WALKING3 : state = WALKING1; break;
-			//case default  : state = IDLE;     
-		
+		switch(state){
+			case JUMPING:
+				if(jump_budget == 0) state = FALLING;
+				break;
+			case FALLING:
+				if(jump_budget != 0) state = DOUBLE_JUMP;
+				break;
+			case DOUBLE_JUMP:
+				break; // nothing to do but wait until on ground 
+			default:
+				state = JUMPING;
+
 		}
 	}
 		
-		
 	
+	else /* if Mario is on the ground */ {
+	
+		if(right_budget == 0 && left_budget == 0){
+			state = IDLE;
+			
+		// mario should be walking 
+		} else if(right_budget > 0 || left_budget > 0){
+			
+			switch(state) {
+				case IDLE     : state = WALKING1; break;
+				case WALKING1 : state = WALKING2; break;
+				case WALKING2 : state = WALKING3; break;
+				case WALKING3 : state = WALKING1; break;
+				//case default  : state = IDLE;     
+			
+			}
+		}
+	}
+	
+	std::cout << "state is" << state;
+}
+
+void Mario::draw(char** pixels){
+	
+	// get most recent state of mario
+	updateState(pixels);
+	
+
 	// offsets used to place the left most and 
 	// bottom most pixels of Mario's foot 
 	// in the left bottom corner of the screen 
@@ -261,13 +312,13 @@ void Mario::draw(char** pixels){
 	
 	// to put mario on ground when y = 0, we need to apply an offset
 	// because the y coordinate begins at the top of the screen
-	int height_offset = MAX_Y - MARIO_HEIGHT;
+	int worldY = convertToWorldCoordinates(y);
 	
 	// facing left, so draw the reverse sprite 
 	if(facing_right == 0) {
 		for(int r=0; r < MARIO_HEIGHT; r++){
 		for(int c=0; c < MARIO_WIDTH; c++){
-			pixels[r + height_offset-y][c+x] = mario_sprite[r][MARIO_WIDTH -1 -c];
+			pixels[r + worldY][c+x] = mario_sprite[r][MARIO_WIDTH -1 -c];
 			
 			
 			}
@@ -278,7 +329,7 @@ void Mario::draw(char** pixels){
 	
 		for(int r=0; r < MARIO_HEIGHT; r++){
 			for(int c=0; c < MARIO_WIDTH; c++){
-				pixels[r + height_offset-y][c+x] = mario_sprite[r][c];
+				pixels[r + worldY][c+x] = mario_sprite[r][c];
 				
 				
 			}

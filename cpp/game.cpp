@@ -1,8 +1,4 @@
-
-
 #include <iostream>
-
-
 #include "game.h"
 
 Game::Game(int h, int w): WALL_HEIGHT(h), WALL_WIDTH(w){

@@ -2,7 +2,9 @@
 
 
 enum marioState {IDLE, 
-			     JUMPING,
+			     JUMPING, 
+				 FALLING,    
+				 DOUBLE_JUMP, // in this state, mario must fall to ground 
  				 WALKING1, 
 				 WALKING2,
 				 WALKING3};
@@ -30,6 +32,13 @@ class Mario{
 	// direction mario is facing 
 	bool facing_right;
 	
+	// mario's y coordinate of 0 should correspond with the 
+	// ground, but instead it corresponds with the roof of of the 
+	// canvas. We make this conversion here.
+	int convertToWorldCoordinates(int y);
+	
+	void updateState(char** pixels);
+	
 	
 	public:
 		void draw(char** pixels);
@@ -43,6 +52,9 @@ class Mario{
 		// update position of mario based on current xy value 
 		// and the movement budget (ex. right_budget)
 		void updatePosition();
+		
+		// check if Mario is on solid ground 
+		bool onGround(char** pixels);
 		
 		// constructor 
 		Mario(int max_y, int max_x);
