@@ -293,8 +293,6 @@ void Mario::updateState(char** pixels){
 			}
 		}
 	}
-	
-	std::cout << "state is" << state;
 }
 
 void Mario::draw(char** pixels){
