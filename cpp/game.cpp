@@ -39,14 +39,16 @@ void Game::drawCanvas(){
 	// clear the screen 
 	clearScreen();
 	
-	
 	// clear the canvas 
 	clearCanvas();
+	
+	// draw landscape 
+	drawBox(30,10, 20);
+	
 	
 	// draw mario's new position on the screen
 	mario->draw(pixels); 
 	
-	drawBox(30,10, 20);
 	
 	// draw the 'roof' of the game 
 	std::cout << '|';

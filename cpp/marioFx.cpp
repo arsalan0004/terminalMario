@@ -240,11 +240,22 @@ bool Mario::onGround(char** pixels){
 	// check the pixles under Mario's feet and see if 
 	// he is on a surface that he can stand on 
 	
+	
 	// 1. if mario is at the bottom of the screen, 
 	// then he is on the ground 
 	if(y==0){
 		return true;
 	}
+	
+	int worldY = convertToWorldCoordinates(y);
+	
+	for(int i =x; i< x + MARIO_WIDTH; i++){
+		if(pixels[worldY + MARIO_HEIGHT][i] == '~') return true;
+	}
+	
+	 
+	
+	
 	
 	
 	// 2. if mario is in on a platform, then he is on the ground too. 
@@ -333,5 +344,7 @@ void Mario::draw(char** pixels){
 			}
 		}
 	}
+	
+	
 }
 
