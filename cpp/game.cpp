@@ -46,6 +46,8 @@ void Game::drawCanvas(){
 	// draw mario's new position on the screen
 	mario->draw(pixels); 
 	
+	drawBox(30,10, 20);
+	
 	// draw the 'roof' of the game 
 	std::cout << '|';
 	for(int i=0; i< WALL_WIDTH; i++){
@@ -101,3 +103,48 @@ void Game::updateCharacterPositions(){
 	
 }
 
+int Game::drawBox(int x, int y, int width){
+	
+	const int BOX_HEIGHT = 2;
+	
+	
+	
+	// convert y so that y=0 refers to the bottom of the 
+	// screen instead of the top of the screen
+	int c_y = WALL_HEIGHT - y;
+	
+
+	int start_x = x;  // left side of the box 
+	int stop_x  = start_x + width;
+	int start_y = WALL_HEIGHT -1 -y;  // bottom of the box 
+	int stop_y  = start_y - BOX_HEIGHT;
+	
+	
+	// check that x, y and width do not place the box outside of the screen
+	if(start_x < 0) return 1;
+	if(start_y > WALL_HEIGHT) return 1;
+	
+	if(stop_x  > WALL_WIDTH) return 1;
+	if(stop_y  < 0) return 1;
+	
+	
+	// draw the top layer of the box 
+	for(int x = start_x; x< stop_x; x++){
+		pixels[stop_y][x] = '~';
+	}
+	
+	// draw the middle of the box (the filling) 
+	for(int h=0; h < BOX_HEIGHT -1; h++){
+		for(int x = start_x; x< stop_x; x++){
+		pixels[stop_y +1 + h][x] = '.';
+	}
+	}
+	
+	// draw the bottom of the box 
+	for(int x = start_x; x< stop_x; x++){
+		pixels[start_y][x] = '-';
+	}
+	
+	return 0;
+	
+}

@@ -6,7 +6,7 @@ const int MARIO_WIDTH  = 16;
 const int MARIO_HEIGHT = 16;
 
 // num of pixels mario moves when he jumps 
-const int MARIO_JUMP_HEIGHT = 5;
+const int MARIO_JUMP_HEIGHT = 10;
 
 namespace mario_sprites{
 	const char* idle[MARIO_WIDTH] = {
