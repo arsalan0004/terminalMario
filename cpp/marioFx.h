@@ -9,6 +9,12 @@ enum marioState {IDLE,
 				 WALKING2,
 				 WALKING3};
 
+// tells us where a boundary has been sensed  
+enum boundarySenseResult { ABOVE,
+						   RIGHT,
+				           LEFT,
+						   NONE /* No boundary was detected*/};
+
 class Mario{
 	
 	marioState state;
@@ -52,6 +58,9 @@ class Mario{
 		// update position of mario based on current xy value 
 		// and the movement budget (ex. right_budget)
 		void updatePosition(char** pixels);
+		
+		// checks if Mario has bumped into a boundary, such as a platform 
+		boundarySenseResult senseBoundary(char** pixels);
 		
 		// check if Mario is on solid ground 
 		bool onGround(char** pixels);

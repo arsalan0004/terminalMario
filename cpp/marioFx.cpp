@@ -161,7 +161,7 @@ int Mario::convertToWorldCoordinates(int y){
 void Mario::updatePosition(char** pixels){
 	// update the position of mario 
 	
-	// determine direction of mario
+	// determine direction that Mario is facing
 	if(right_budget == left_budget){
 		// don't change mario's direction
 		facing_right = facing_right;
@@ -173,16 +173,26 @@ void Mario::updatePosition(char** pixels){
 	}
 	
 	// for calculating the jump
-	if(jump_budget > 0){
-		// move mario up
-		y++;
-		jump_budget--;
+	if(jump_budget > 0){ 
+		
+		// check if boundary ontop of Mario's head 
+		if(senseBoundary(pixels) == ABOVE){
+			// don't jump, and also remove all potential to 
+			// jump while under the boundary
+			jump_budget = 0;
+		}
+		
+		else {
+			// move mario up
+			y++;
+			jump_budget--;
+			}
 	}
 	
 	// if mario is not scheduled to jump 
 	// or he is at the peak of his jump 
 	// (i.e. his jump budget is 0)
-	 else if(jump_budget == 0){
+	 if(jump_budget == 0){
 		if(!onGround(pixels)){
 			y--;
 		}
@@ -190,15 +200,32 @@ void Mario::updatePosition(char** pixels){
 	
 	// for moving mario forward 
 	if(right_budget > 0){
-		x++;
-		right_budget --;
+		
+		// check if hit a boundary  ie. a wall 
+		if(senseBoundary(pixels) == RIGHT){
+			right_budget = 0;
+		}
+		
+		else {
+			x++;
+			right_budget --;
+		}
+		
 		
 	}
 	
 	// for moving mario backwards
 	if(left_budget > 0){
-		x--;
-		left_budget--;
+		
+		// check if hit a boundary  ie. a wall 
+		if(senseBoundary(pixels) == LEFT){
+			right_budget = 0;
+		}
+		else {
+			x--;
+			left_budget--;
+		}
+		
 	}
 	
 	
@@ -233,6 +260,34 @@ const char** get_mario_sprite(marioState state){
 		default: 
 			return mario_sprites::idle;
 	}
+}
+
+boundarySenseResult Mario::senseBoundary(char** pixels){
+	/* checks if Mario bumps into something in the game*/
+	
+	boundarySenseResult res = NONE;
+	
+	// convert y coordinate of mario to world coordinate
+	int worldY = convertToWorldCoordinates(y);
+	
+	
+	// check if there is anything on top of mario
+	for(int i =x; i< x + MARIO_WIDTH -1; i++){
+		if (pixels[worldY -1][i] != ' ') res = ABOVE;
+	}
+	
+	
+	for(int i = worldY; i< worldY + MARIO_HEIGHT; i++){
+		if (pixels[i][x + MARIO_WIDTH] != ' ') res = RIGHT;
+	}
+	
+	for(int i = worldY; i< worldY + MARIO_HEIGHT; i++){
+		if (pixels[i][x -1] != ' ') res = LEFT;
+	}
+	
+	return res;
+	
+	
 }
 
 bool Mario::onGround(char** pixels){
@@ -325,9 +380,12 @@ void Mario::draw(char** pixels){
 	
 	const char** mario_sprite = get_mario_sprite(state);
 	
+	
+	
 	// to put mario on ground when y = 0, we need to apply an offset
 	// because the y coordinate begins at the top of the screen
 	int worldY = convertToWorldCoordinates(y);
+	
 	
 	// facing left, so draw the reverse sprite 
 	if(facing_right == 0) {
@@ -349,7 +407,5 @@ void Mario::draw(char** pixels){
 			}
 		}
 	}
-	
-	
 }
 

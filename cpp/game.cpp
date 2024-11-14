@@ -1,10 +1,13 @@
 #include <iostream>
 #include "game.h"
 
+
+const int BOX_HEIGHT = 2;
+
+
 Game::Game(int h, int w): WALL_HEIGHT(h), WALL_WIDTH(w){
 	
 	mario = new Mario(h, w);
-	
 	
 	// create a new array of pointers which point to a char 
 	pixels = new char*[h]; 
@@ -15,7 +18,6 @@ Game::Game(int h, int w): WALL_HEIGHT(h), WALL_WIDTH(w){
 		pixels[i] = new char[w];
 	}
 		
-			
 	gameRunning = false;
 	
 	
@@ -43,7 +45,10 @@ void Game::drawCanvas(){
 	clearCanvas();
 	
 	// draw platform for Mario to stand on 
-	drawBox(30,10, 20);
+	drawBox(30,30, 20);
+	
+	// draw platform for Mario has to jump over
+	drawBox(20,10, 20);
 	
 	// draw mario's new position on the screen
 	mario->draw(pixels); 
@@ -105,10 +110,6 @@ void Game::updateCharacterPositions(){
 
 int Game::drawBox(int x, int y, int width){
 	
-	const int BOX_HEIGHT = 2;
-	
-	
-	
 	// convert y so that y=0 refers to the bottom of the 
 	// screen instead of the top of the screen
 	int c_y = WALL_HEIGHT - y;
@@ -144,6 +145,9 @@ int Game::drawBox(int x, int y, int width){
 	for(int x = start_x; x< stop_x; x++){
 		pixels[start_y][x] = '-';
 	}
+	
+	// add the boundaries of the box to the game, so Mario cannot go through
+	
 	
 	return 0;
 	

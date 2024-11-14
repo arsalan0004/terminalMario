@@ -58,7 +58,6 @@ void getInput(Mario* mario, bool* gameRunning){
         }
 		
 		else if (ch == 'w') {
-			std:: cout << "pressed w";
 			mario->elevate();
 		}
 		
