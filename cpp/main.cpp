@@ -97,9 +97,7 @@ int main(){
 	
 	while(gameRunning){
 		
-		
 		g->updateCharacterPositions();
-		
 		
 		g->drawCanvas();
 		

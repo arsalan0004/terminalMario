@@ -51,7 +51,7 @@ class Mario{
 		
 		// update position of mario based on current xy value 
 		// and the movement budget (ex. right_budget)
-		void updatePosition();
+		void updatePosition(char** pixels);
 		
 		// check if Mario is on solid ground 
 		bool onGround(char** pixels);

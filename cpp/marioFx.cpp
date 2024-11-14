@@ -158,8 +158,7 @@ int Mario::convertToWorldCoordinates(int y){
 	return MAX_Y - MARIO_HEIGHT -y;
 }
 
-void Mario::updatePosition(){
-	
+void Mario::updatePosition(char** pixels){
 	// update the position of mario 
 	
 	// determine direction of mario
@@ -184,7 +183,7 @@ void Mario::updatePosition(){
 	// or he is at the peak of his jump 
 	// (i.e. his jump budget is 0)
 	 else if(jump_budget == 0){
-		if(y > 0){
+		if(!onGround(pixels)){
 			y--;
 		}
 	}
@@ -247,19 +246,13 @@ bool Mario::onGround(char** pixels){
 		return true;
 	}
 	
+	
+	// 2. if mario is in on a platform, then he is on the ground too. 
 	int worldY = convertToWorldCoordinates(y);
 	
 	for(int i =x; i< x + MARIO_WIDTH; i++){
 		if(pixels[worldY + MARIO_HEIGHT][i] == '~') return true;
 	}
-	
-	 
-	
-	
-	
-	
-	// 2. if mario is in on a platform, then he is on the ground too. 
-	// TODO 
 	
 	return false;
 	
@@ -286,9 +279,22 @@ void Mario::updateState(char** pixels){
 	}
 		
 	
-	else /* if Mario is on the ground */ {
-	
-		if(right_budget == 0 && left_budget == 0){
+	else /* if Mario is on the ground, or landed on on surface*/ {
+		
+		
+		if /* if mario had landed on a platform during the course of a jump */
+		(state == JUMPING || state == FALLING || state == DOUBLE_JUMP){
+			
+			// then he should become IDLE
+			state = IDLE;
+			
+			// make it so he won't jump in the next frame 
+			jump_budget = 0;
+			
+		}
+		
+		if /* Mario hasn't been commanded to move right or left*/
+		(right_budget == 0 && left_budget == 0){
 			state = IDLE;
 			
 		// mario should be walking 
@@ -328,7 +334,6 @@ void Mario::draw(char** pixels){
 		for(int r=0; r < MARIO_HEIGHT; r++){
 		for(int c=0; c < MARIO_WIDTH; c++){
 			pixels[r + worldY][c+x] = mario_sprite[r][MARIO_WIDTH -1 -c];
-			
 			
 			}
 		}

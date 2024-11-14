@@ -42,13 +42,11 @@ void Game::drawCanvas(){
 	// clear the canvas 
 	clearCanvas();
 	
-	// draw landscape 
+	// draw platform for Mario to stand on 
 	drawBox(30,10, 20);
-	
 	
 	// draw mario's new position on the screen
 	mario->draw(pixels); 
-	
 	
 	// draw the 'roof' of the game 
 	std::cout << '|';
@@ -100,7 +98,7 @@ void Game::drawCanvas(){
 }
 
 void Game::updateCharacterPositions(){
-	mario->updatePosition();
+	mario->updatePosition(pixels);
 	
 	
 }
